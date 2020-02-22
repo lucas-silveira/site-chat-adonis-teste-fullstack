@@ -4,7 +4,17 @@ import { takeLatest, call, put, all } from 'redux-saga/effects';
 import api from '~/services/api';
 import history from '~/services/history';
 
-import { signInSuccess, signFailure } from './actions';
+import {
+  signInSuccess,
+  signInFailure,
+  signOutRequest,
+  signUpSuccess,
+  signUpFailure,
+  forgotPasswordSuccess,
+  forgotPasswordFailure,
+  resetPasswordSuccess,
+  resetPasswordFailure,
+} from './actions';
 
 export function* signIn({ payload }) {
   try {
@@ -12,7 +22,7 @@ export function* signIn({ payload }) {
 
     const response = yield call(api.post, 'sessions', {
       email,
-      senha: password,
+      password,
     });
 
     const { token, user } = response.data;
@@ -24,24 +34,22 @@ export function* signIn({ payload }) {
     history.push('/dashboard');
   } catch (err) {
     toast.error(err.response.data.error);
-    yield put(signFailure());
+    yield put(signInFailure());
   }
 }
 
 export function* signUp({ payload }) {
   try {
-    const { name, email, password } = payload;
+    const { data } = payload;
 
-    yield call(api.post, 'users', {
-      name,
-      email,
-      password,
-    });
+    yield call(api.post, 'users', data);
 
+    toast.success('Usuário criado com sucesso!');
+    yield put(signUpSuccess());
     history.push('/');
   } catch (err) {
     toast.error(err.response.data.error);
-    yield put(signFailure());
+    yield put(signUpFailure());
   }
 }
 
@@ -55,8 +63,9 @@ export function setToken({ payload }) {
   }
 }
 
-export function signOut() {
+export function* signOut() {
   delete api.defaults.headers.Authorization;
+  yield put(signOutRequest());
   history.push('/');
 }
 
@@ -66,36 +75,34 @@ export function* forgotPassword({ payload }) {
 
     yield call(api.post, 'forgot_password', {
       email,
+      redirect_url: 'http://localhost:3000/reset-password',
     });
 
     toast.success('Um email foi enviado com as instruções.');
+    yield put(forgotPasswordSuccess());
     history.push('/');
   } catch (err) {
     toast.error(err.response.data.error);
+    yield put(forgotPasswordFailure());
   }
 }
 
 export function* resetPassword({ payload }) {
   try {
-    const { password, token } = payload;
+    const { token, password, password_confirmation } = payload;
 
-    yield call(
-      api.put,
-      'reset_password',
-      {
-        senha: password,
-      },
-      {
-        params: {
-          token,
-        },
-      }
-    );
+    yield call(api.put, 'forgot_password', {
+      token,
+      password,
+      password_confirmation,
+    });
 
     toast.success('A senha foi redefinida com sucesso!');
+    yield put(resetPasswordSuccess());
     history.push('/');
   } catch (err) {
     toast.error(err.response.data.error);
+    yield put(resetPasswordFailure());
   }
 }
 
@@ -103,7 +110,7 @@ export default all([
   takeLatest('persist/REHYDRATE', setToken),
   takeLatest('@auth/SIGN_IN_REQUEST', signIn),
   takeLatest('@auth/SIGN_UP_REQUEST', signUp),
-  takeLatest('@auth/SIGN_OUT', signOut),
-  takeLatest('@auth/FORGOT_PASSWORD', forgotPassword),
-  takeLatest('@auth/RESET_PASSWORD', resetPassword),
+  takeLatest('@auth/SIGN_OUT_REQUEST', signOut),
+  takeLatest('@auth/FORGOT_PASSWORD_REQUEST', forgotPassword),
+  takeLatest('@auth/RESET_PASSWORD_REQUEST', resetPassword),
 ]);

@@ -12,35 +12,71 @@ export function signInSuccess(token, user) {
   };
 }
 
-export function signUpRequest(name, email, password) {
+export function signInFailure() {
+  return {
+    type: '@auth/SIGN_IN_FAILURE',
+  };
+}
+
+export function signUpRequest(data) {
   return {
     type: '@auth/SIGN_UP_REQUEST',
-    payload: { name, email, password },
+    payload: { data },
   };
 }
 
-export function signFailure() {
+export function signUpSuccess() {
   return {
-    type: '@auth/SIGN_FAILURE',
+    type: '@auth/SIGN_UP_SUCCESS',
   };
 }
 
-export function signOut() {
+export function signUpFailure() {
   return {
-    type: '@auth/SIGN_OUT',
+    type: '@auth/SIGN_UP_FAILURE',
   };
 }
 
-export function forgotPassword(email) {
+export function signOutRequest() {
   return {
-    type: '@auth/FORGOT_PASSWORD',
+    type: '@auth/SIGN_OUT_REQUEST',
+  };
+}
+
+export function forgotPasswordRequest(email) {
+  return {
+    type: '@auth/FORGOT_PASSWORD_REQUEST',
     payload: { email },
   };
 }
 
-export function resetPassword(password, token) {
+export function forgotPasswordSuccess() {
   return {
-    type: '@auth/RESET_PASSWORD',
-    payload: { password, token },
+    type: '@auth/FORGOT_PASSWORD_SUCCESS',
+  };
+}
+
+export function forgotPasswordFailure() {
+  return {
+    type: '@auth/FORGOT_PASSWORD_FAILURE',
+  };
+}
+
+export function resetPasswordRequest(token, password, password_confirmation) {
+  return {
+    type: '@auth/RESET_PASSWORD_REQUEST',
+    payload: { token, password, password_confirmation },
+  };
+}
+
+export function resetPasswordSuccess() {
+  return {
+    type: '@auth/RESET_PASSWORD_SUCCESS',
+  };
+}
+
+export function resetPasswordFailure() {
+  return {
+    type: '@auth/RESET_PASSWORD_FAILURE',
   };
 }
