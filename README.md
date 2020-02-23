@@ -25,7 +25,7 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 ### :movie_camera: Preview
 
 Authentication<br />
-![chat interation](https://user-images.githubusercontent.com/28576055/75120811-2a572680-566d-11ea-859d-4a155e3fe6d2.gif)
+![chat presentation](https://user-images.githubusercontent.com/28576055/75120381-2e357980-566a-11ea-90b2-bbb597921501.gif)
 
 Chat<br />
-![chat interation](https://user-images.githubusercontent.com/28576055/75120441-cf243480-566a-11ea-9cc5-2de2f6b95049.gif)
+![chat interation](https://user-images.githubusercontent.com/28576055/75120811-2a572680-566d-11ea-859d-4a155e3fe6d2.gif)
