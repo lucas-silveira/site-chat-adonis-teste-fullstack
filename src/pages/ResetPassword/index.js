@@ -32,7 +32,7 @@ export default function ResetPassword() {
     const tokenUrl = urlParams.get('token');
 
     setToken(tokenUrl);
-  }, []);
+  }, [location.search]);
 
   function handleSubmit(event) {
     event.preventDefault();

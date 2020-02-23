@@ -3,8 +3,9 @@ import styled from 'styled-components';
 export const Wrapper = styled.main`
   display: flex;
   justify-content: center;
-  min-height: 100vh;
   align-items: center;
+  min-height: 100vh;
+  padding: 20px 0;
   background-image: linear-gradient(to bottom right, #2955d9, #977ef2);
 
   > div {
@@ -29,6 +30,27 @@ export const Wrapper = styled.main`
       label input,
       button {
         height: 50px;
+      }
+
+      label.avatar {
+        span,
+        img {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 140px;
+          height: 140px;
+          background-color: #eaeaea;
+          text-align: center;
+          margin: 0 auto;
+          cursor: pointer;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+
+        div {
+          display: none;
+        }
       }
 
       label {

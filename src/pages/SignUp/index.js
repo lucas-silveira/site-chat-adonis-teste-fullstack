@@ -17,6 +17,7 @@ import { Container } from './styles';
 export default function SignUp() {
   const dispatch = useDispatch();
   const loading = useSelector(state => state.auth.loading);
+  const [avatar, setAvatar] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -32,22 +33,39 @@ export default function SignUp() {
   function handleSubmit(event) {
     event.preventDefault();
 
-    dispatch(
-      signUpRequest({
-        name,
-        email,
-        password,
-        password_confirmation: passwordConfirmation,
-        address,
-        phone,
-      })
-    );
+    const attempt = new FormData();
+
+    attempt.append('file', avatar);
+    attempt.append('name', name);
+    attempt.append('email', email);
+    attempt.append('password', password);
+    attempt.append('password_confirmation', passwordConfirmation);
+    attempt.append('address', address);
+    attempt.append('phone', phone);
+
+    dispatch(signUpRequest(attempt));
   }
 
   return (
     <Container>
       <h2>Crie sua conta grátis</h2>
       <form onSubmit={handleSubmit}>
+        <label className="avatar" htmlFor="avatar">
+          {avatar ? (
+            <img src={URL.createObjectURL(avatar)} alt="Avatar" />
+          ) : (
+            <span>Insira um avatar</span>
+          )}
+          <div>
+            <input
+              type="file"
+              id="avatar"
+              name="avatar"
+              accept="image/x-png, image/jpeg"
+              onChange={event => setAvatar(event.target.files[0])}
+            />
+          </div>
+        </label>
         <label htmlFor="name">
           <span>Nome</span>
           <div>

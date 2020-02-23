@@ -7,7 +7,6 @@ import history from '~/services/history';
 import {
   signInSuccess,
   signInFailure,
-  signOutRequest,
   signUpSuccess,
   signUpFailure,
   forgotPasswordSuccess,
@@ -27,9 +26,9 @@ export function* signIn({ payload }) {
 
     const { token, user } = response.data;
 
-    api.defaults.headers.Authorization = `Bearer ${token}`;
+    api.defaults.headers.Authorization = `Bearer ${token.token}`;
 
-    yield put(signInSuccess(token, user));
+    yield put(signInSuccess(token.token, user));
 
     history.push('/dashboard');
   } catch (err) {
@@ -63,9 +62,8 @@ export function setToken({ payload }) {
   }
 }
 
-export function* signOut() {
+export function signOut() {
   delete api.defaults.headers.Authorization;
-  yield put(signOutRequest());
   history.push('/');
 }
 
